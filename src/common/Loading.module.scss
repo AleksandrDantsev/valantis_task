@@ -1,0 +1,54 @@
+.load_window {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    position: fixed;
+    width: 75%;
+    top: 0;
+    bottom: 0;
+    background-color: #fff;
+    opacity: 0.9;
+}
+.load_square {
+    position: fixed;
+    z-index: 200;
+    width: 100px;
+    height: 160px;
+    border-radius: 13px;
+    overflow: hidden;
+    box-shadow: 0 0 5px 1px rgb(196, 196, 196);
+    span {
+        display: block;
+        width: 100%;
+        height: calc(100% / 4);
+        border-radius: 2px;
+        margin-bottom: 2px;
+    }
+}
+.anim0 {
+    animation: puls 1300ms linear infinite 600ms;
+}
+.anim1 {
+    animation: puls 1300ms linear infinite 400ms;
+}
+.anim2 {
+    animation: puls 1300ms linear infinite 200ms;
+}
+.anim3 {
+    animation: puls 1300ms linear infinite 0ms;
+}
+
+
+@keyframes puls {
+    0% {
+        background-color: #c7c7c6;
+    }
+    30% {
+        background-color: rgb(184, 184, 184);
+        box-shadow: 0 0 15px 1px rgb(192, 192, 192);
+    }
+    100% {
+        opacity: 0;
+    }
+}

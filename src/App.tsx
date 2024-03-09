@@ -1,5 +1,5 @@
 import React from 'react';
-import './App.css'
+import './App.scss'
 import  ListProducts  from './pages/listProducts';
 
 
@@ -7,8 +7,8 @@ import  ListProducts  from './pages/listProducts';
    
   return (
     <React.Fragment>
-		  <ListProducts />
-	  </React.Fragment>
+		<ListProducts />
+	</React.Fragment>
   )
 }
 

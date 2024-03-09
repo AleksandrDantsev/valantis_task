@@ -1,0 +1,32 @@
+.formSearh {
+    display: flex;
+    position: sticky;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 300px;
+    top: 20px;
+    padding: 20px;
+    margin-left: 20px;
+  
+}
+
+.search {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 100%;
+}
+.title {
+    font-size: 15px;
+    color: rgb(46, 46, 46);
+}
+.search_input {
+    width: 80%;
+    margin: 15px auto;
+    padding: 0 10px;
+    height: 40px;
+    font-size: 18px;
+    border-radius: 2px; 
+    border: 1px solid rgb(95, 95, 95);
+}

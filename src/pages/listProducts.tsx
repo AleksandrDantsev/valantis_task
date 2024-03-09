@@ -1,29 +1,47 @@
 import React, { useState, useEffect } from "react";
 import st from "./listProducts.module.scss"
-import { KEY_ACCESS } from '../constants/authentication';
-import { fetchCustom } from "../helpers/fetchData";
+import { Fetch } from "../helpers/fetchData";
 import Pagination from "../components/Pagination/Pagination";
 import CardListItem from "../components/CardListItem/CardListItem";
-import { productsInfoType } from "../types/fetchTypes";
+import { productsInfoTypeArray, productsInfoType } from "../types/fetchTypes";
 import FormFilter from "../components/forms/FormFilter/FormFilter";
 
-const fetchValantisURL = fetchCustom("https://api.valantis.store:41000/", KEY_ACCESS)
 
 const ListProducts: React.FC = () => {
     const [paginationNumber, setPaginationNumber] = useState<number>(0);
-    const [productInfo, setProductInfo] = useState<productsInfoType>({result: []})
-    const [filter, setFilter] = useState(66)
+    const [productInfo, setProductInfo] = useState<productsInfoTypeArray>([])
+    const [searchNameQuery, setSearcNameQuery] = useState<string>('')
+    const [searchBrandQuery, setSearchBrandQuery] = useState<string | null>(null)
+    const [searchCostQuery, setSearchCostQuery] = useState<number | null>(null)
 
     const quantityShowCard = 50
 
-    useEffect(() => {
-        const filterOrAllProd = filter ? fetchValantisURL("filter", {"product": "колье"}) :
-                                fetchValantisURL("get_ids", {"offset": quantityShowCard * paginationNumber, "limit": 65})
+    const typeSearch = (() => {
+        const typeSearchDict = {
+            name: "product",
+            brand: "brand",
+            cost: "price",
+        }
 
-        filterOrAllProd.then(el => fetchValantisURL("get_items", {"ids": el}))
-                       .then(el => setProductInfo(el))
-        
-    }, [paginationNumber])
+        if (searchNameQuery) return [typeSearchDict["name"], searchNameQuery]
+        else if (searchBrandQuery) return [typeSearchDict["brand"], searchBrandQuery]
+        else if (searchCostQuery) return [typeSearchDict["cost"], searchCostQuery]
+        return ["product", searchNameQuery]
+    })()
+    console.log(typeSearch)
+    useEffect(() => {
+       if ([searchNameQuery, searchBrandQuery, searchCostQuery].every(el => Boolean(el) === false)) {
+            Fetch.get('get_ids', {"offset": quantityShowCard * paginationNumber, "limit": 60}).then(el => (
+            Fetch.get('get_items', {"ids": el}))).then(el => setProductInfo(el))
+
+       }
+       else {
+            const type = typeSearch[0]
+            Fetch.get('filter', {[type]: typeSearch[1]}).then(el => (
+            Fetch.get('get_items', {"ids": el}))).then(el => setProductInfo(el))  
+       }
+
+    }, [paginationNumber, searchNameQuery, searchBrandQuery, searchCostQuery])
 
   
    
@@ -32,30 +50,29 @@ const ListProducts: React.FC = () => {
 
     console.log(productInfo)
     
-  
- 
 
     return (
         <React.Fragment>
             <div className={st.list_product_wrapper}>
                 <div className={st.actions_page}>
-                    <FormFilter />
+                    <FormFilter setSearcNameQuery={setSearcNameQuery}
+                                setSearchBrandQuery={setSearchBrandQuery}
+                                setSearchCostQuery={setSearchCostQuery}
+                    />
                     <Pagination setPaginationNumber={setPaginationNumber}
-                                lengthArrayProducts={productInfo.result.length}
+                                lengthArrayProducts={productInfo.length}
                                 quantityProductOnPage={quantityShowCard} />
                 </div>
-                
                 <div className={st.list_product}>
                     {   
-                        productInfo.result.length > 0 && productInfo.result.map((element: any) => <CardListItem 
-                            key={element.id}
-                            brand={element!.brand}
-                            id={element!.id}
-                            price={element!.price}
-                            product={element!.product}
+                        productInfo.length > 0 && productInfo.map((element: productsInfoType) => <CardListItem 
+                                key={element.id}
+                                brand={element!.brand}
+                                id={element!.id}
+                                price={element!.price}
+                                product={element!.product}
                         />)
-                    }
-                    
+                    }       
                 </div>
             </div>
         </React.Fragment>

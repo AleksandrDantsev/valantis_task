@@ -1,0 +1,18 @@
+.list_product_wrapper {
+    display: flex;
+    width: 95%;
+    margin: 40px auto;
+}
+
+.list_product {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    width: 75%;
+}
+
+.actions_page {
+   min-width: 25%;
+}
+

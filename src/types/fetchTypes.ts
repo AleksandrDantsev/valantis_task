@@ -1,11 +1,11 @@
 type productsInfoType = {
-    result: [
-        brand: null | string,
-        id: string,
-        price: string,
-        product: string,
-    ] | []
+    brand: null | string,
+    id: string,
+    price: string,
+    product: string,
+    
 }
 
+type productsInfoTypeArray = productsInfoType[]
 
-export type { productsInfoType }
+export type { productsInfoTypeArray, productsInfoType }

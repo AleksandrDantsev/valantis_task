@@ -4,49 +4,54 @@
     justify-content: center;
     z-index: 10;
     position: fixed;
-    width: 75%;
+    width: 100%;
     top: 0;
     bottom: 0;
+    left: 0;
+    right: 0;
     background-color: #fff;
-    opacity: 0.9;
 }
 .load_square {
     position: fixed;
     z-index: 200;
-    width: 100px;
-    height: 160px;
-    border-radius: 13px;
+    width: 80px;
+    height: 240px;
+    border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 0 5px 1px rgb(196, 196, 196);
+    box-shadow: 0 0 5px 1px rgb(219, 219, 219);
+    background-color: #fff;
+    transform: rotate(90deg);
     span {
         display: block;
         width: 100%;
-        height: calc(100% / 4);
-        border-radius: 2px;
+        height: calc(100% / 5);
+        // border-radius: 2px;
         margin-bottom: 2px;
     }
 }
 .anim0 {
-    animation: puls 1300ms linear infinite 600ms;
+    animation: puls 1800ms linear infinite 800ms;
 }
 .anim1 {
-    animation: puls 1300ms linear infinite 400ms;
+    animation: puls 1800ms linear infinite 600ms;
 }
 .anim2 {
-    animation: puls 1300ms linear infinite 200ms;
+    animation: puls 1800ms linear infinite 400ms;
 }
 .anim3 {
-    animation: puls 1300ms linear infinite 0ms;
+    animation: puls 1800ms linear infinite 200ms;
+}
+.anim4 {
+    animation: puls 1800ms linear infinite 0ms;
 }
 
 
 @keyframes puls {
     0% {
-        background-color: #c7c7c6;
+        background-color: #ac9c85;
     }
     30% {
-        background-color: rgb(184, 184, 184);
-        box-shadow: 0 0 15px 1px rgb(192, 192, 192);
+        background-color: rgb(221, 142, 38);
     }
     100% {
         opacity: 0;

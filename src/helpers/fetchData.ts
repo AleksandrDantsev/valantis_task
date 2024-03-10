@@ -46,9 +46,11 @@ class FetchValantis {
         catch(error) {
             console.log(error);
 
+            let unsuccessfulAttempt = 0;
             let result;
-            while (!result) {
+            while (!result || unsuccessfulAttempt < 5) {
                 result = this.get(method, params);
+                unsuccessfulAttempt += 1;
             }
             return result;
         }

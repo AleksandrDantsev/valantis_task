@@ -25,12 +25,16 @@ class FetchValantis {
             const array = gotArrayProduct?.result;
 
             if (method === "get_ids" || method === "filter") {  
-                const hash: {[key: string]: number} = {}
+                let hash: {[key: string]: number} | null = {}
 
                 for (let item of array) {
                     if (!hash[item]) hash[item] = 1
                 }
-                return Object.keys(hash).slice(0, 50)
+
+                const result = Object.keys(hash)
+
+                hash = null;
+                return method === "filter" ? result : result.slice(0, 50)
             }
 
             else if (method === "get_items") {
@@ -48,10 +52,11 @@ class FetchValantis {
 
             let unsuccessfulAttempt = 0;
             let result;
-            while (!result || unsuccessfulAttempt < 5) {
+            while (!result || unsuccessfulAttempt < 6) {
                 result = this.get(method, params);
                 unsuccessfulAttempt += 1;
             }
+            if (unsuccessfulAttempt === 5) return [undefined];
             return result;
         }
     
@@ -62,4 +67,4 @@ class FetchValantis {
 const Fetch = new FetchValantis()
 
 
-export {Fetch}
+export { Fetch }

@@ -6,15 +6,17 @@ interface IFormFilter {
     searcQueryMode: string;
     setSearcQueryMode: (arg: string) => void;
     setSearchTextRequest: (arg: string) => void;
+    setPaginationNumber: (arg: number) => void;
 }
 
-const FormFilter: React.FC<IFormFilter> = memo(({searcQueryMode, setSearcQueryMode, setSearchTextRequest}) => {
+const FormFilter: React.FC<IFormFilter> = memo(({searcQueryMode, setSearcQueryMode, setSearchTextRequest, setPaginationNumber}) => {
     const input = useRef<HTMLInputElement | null>(null)
 
     const changeSearchNameInput = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
-        const target = e.target as HTMLInputElement
-        setSearchTextRequest(target.value)
-    }, 1500)
+        const target = e.target as HTMLInputElement;
+        setPaginationNumber(0);
+        setSearchTextRequest(target.value);
+    }, 1600)
                         
     const choiseButtonModeSearch = (e: React.MouseEvent<HTMLUListElement>) => {
         e.preventDefault();

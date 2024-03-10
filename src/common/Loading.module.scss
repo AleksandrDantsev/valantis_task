@@ -29,31 +29,42 @@
         margin-bottom: 2px;
     }
 }
+
+@mixin animation($delay) {
+    animation: puls 1600ms linear infinite $delay;
+}
+
 .anim0 {
-    animation: puls 1800ms linear infinite 800ms;
+    @include animation(800ms);
 }
 .anim1 {
-    animation: puls 1800ms linear infinite 600ms;
+    @include animation(600ms);
 }
 .anim2 {
-    animation: puls 1800ms linear infinite 400ms;
+    @include animation(400ms);
 }
 .anim3 {
-    animation: puls 1800ms linear infinite 200ms;
+    @include animation(200ms);
 }
 .anim4 {
-    animation: puls 1800ms linear infinite 0ms;
+    @include animation(0ms);
 }
 
 
 @keyframes puls {
     0% {
-        background-color: #ac9c85;
+        background-color: #e6b26b;
     }
     30% {
-        background-color: rgb(221, 142, 38);
+        background-color: rgba(219, 145, 48, 0.562);
     }
     100% {
         opacity: 0;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .load_square {
+        transform: unset;
     }
 }

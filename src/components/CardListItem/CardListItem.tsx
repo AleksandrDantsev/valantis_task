@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import st from "./CardListItem.module.scss"
 import { checkTypeProduct } from "../../helpers/importImages";
 
@@ -11,8 +11,8 @@ interface ICardListItem {
 }
 
 
-export const CardListItem: React.FC<ICardListItem> = ({brand, id, price, product}) => {
-
+export const CardListItem: React.FC<ICardListItem> = memo(({brand, id, price, product}) => {
+    console.log('card')
     return (
         <div className={st.card_list_item}>
             {Boolean(brand) && <div className={st.brand}>{brand}</div>}
@@ -22,7 +22,7 @@ export const CardListItem: React.FC<ICardListItem> = ({brand, id, price, product
             <div className={st.id}>{id}</div>
         </div>
     )
-}
+})
 
 
 export default CardListItem

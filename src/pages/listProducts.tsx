@@ -11,26 +11,26 @@ import { checkIsDigital } from "../helpers/checkIsDigital";
 
 const ListProducts: React.FC = () => {
     const [paginationNumber, setPaginationNumber] = useState<number>(0);
-    const [productInfo, setProductInfo] = useState<productsInfoTypeArray>([])
+    const [productInfo, setProductInfo] = useState<productsInfoTypeArray | undefined[]>([])
     const [searcQueryMode, setSearcQueryMode] = useState<string>('')
     const [searchTextRequest, setSearchTextRequest] = useState<string>('')
-
 
     const quantityShowCard = 50
 
     useEffect(() => { 
             setProductInfo([])
-            console.log(searcQueryMode)
-            console.log(searchTextRequest)
-            if (Boolean(searcQueryMode) === false) {
+        
+            if (Boolean(searcQueryMode) === false || Boolean(searchTextRequest) === false) {
                 Fetch.get('get_ids', {"offset": quantityShowCard * paginationNumber, "limit": 60}).then(el => (
                 Fetch.get('get_items', {"ids": el}))).then(el => setProductInfo(el))
-    
-           }
-           else {
+                
+            }
+            else {
                 Fetch.get('filter', {[searcQueryMode]: checkIsDigital(searchTextRequest)}).then(el => (
                 Fetch.get('get_items', {"ids": el}))).then(el => setProductInfo(el))  
-           }
+            }
+        
+        
     }, [paginationNumber, searchTextRequest])
 
   
@@ -39,18 +39,25 @@ const ListProducts: React.FC = () => {
 
     return (
         <React.Fragment>
+            {productInfo.length > 2 &&
+            <div className={st.quantity_prod}>
+                Товаров на странице: {productInfo[0] !== undefined ? productInfo.length : ''}
+            </div>}
             <div className={st.list_product_wrapper}>
                 <div className={st.list_product}>
                     {productInfo.length === 0 && <Loading />}
                     {   
-                    (productInfo.length > 2 && productInfo[0] !== undefined) ? productInfo.map((element: productsInfoType) => <CardListItem 
-                                key={element.id}
+                    (productInfo.length > 2 && productInfo[0] !== undefined) ? 
+                     productInfo.map((element: productsInfoType | undefined) => <CardListItem 
+                                key={element!.id}
                                 brand={element?.brand}
-                                id={element.id}
-                                price={element.price}
-                                product={element.product}
+                                id={element!.id}
+                                price={element!.price}
+                                product={element!.product}
                     />)
-                    : <div className={st.not_found}><span>Ничего не найдено. Попробуйте изменить фильтр</span></div>
+                    :<div className={st.not_found}>
+                        <span>Ничего не найдено. Попробуйте изменить фильтр</span>
+                     </div>
                     }       
                 </div>
                 <div className={st.actions_page}>

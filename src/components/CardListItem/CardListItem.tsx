@@ -3,7 +3,7 @@ import st from "./CardListItem.module.scss"
 import { checkTypeProduct } from "../../helpers/importImages";
 
 interface ICardListItem {
-    brand: null | string;
+    brand?: null | string;
     id: string,
     price: string;
     product: string;

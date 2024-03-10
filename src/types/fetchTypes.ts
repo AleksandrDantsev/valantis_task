@@ -3,8 +3,7 @@ type productsInfoType = {
     id: string,
     price: string,
     product: string,
-    
-}
+} 
 
 type productsInfoTypeArray = productsInfoType[]
 

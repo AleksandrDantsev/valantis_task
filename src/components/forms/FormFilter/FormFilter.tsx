@@ -15,7 +15,10 @@ const FormFilter: React.FC<IFormFilter> = memo(({searcQueryMode, setSearcQueryMo
     const changeSearchNameInput = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
         const target = e.target as HTMLInputElement;
         setPaginationNumber(0);
-        setSearchTextRequest(target.value);
+        if (target.value) {
+            const handleTextInput = target.value.toLowerCase().trim();
+            setSearchTextRequest(handleTextInput);
+        }
     }, 1600)
                         
     const choiseButtonModeSearch = (e: React.MouseEvent<HTMLUListElement>) => {

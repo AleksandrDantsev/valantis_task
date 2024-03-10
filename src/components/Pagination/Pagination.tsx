@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import st from "./Pagination.module.scss"
 
 interface IPagination {
     setPaginationNumber: (arg: number) => void,
@@ -18,14 +19,13 @@ const Pagination: React.FC<IPagination> = memo(({setPaginationNumber,
 
     const paintPaginationElement = () => {
         const quantity = Math.ceil(lengthArrayProducts / quantityProductOnPage) + 1;
-
         return new Array(quantity).fill(0).map((el, i) => el = i + 1)
     }
 
     return (
-        <div>
-            <ul onClick={setPaginationNumberHandler}>
-                {paintPaginationElement().map(el => <li key={el}><a href="#">{el}</a></li>)}
+        <div className={st.pagination}>
+            <ul className={st.pagination_list} onClick={setPaginationNumberHandler}>
+                {paintPaginationElement().map(el => <li className={st.pagin_crumb} key={el}><a href="#">{el}</a></li>)}
             </ul>
         </div>
     )

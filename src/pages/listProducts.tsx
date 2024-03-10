@@ -17,38 +17,55 @@ const ListProducts: React.FC = () => {
 
     const quantityShowCard = 50
 
-    useEffect(() => { 
-            setProductInfo([])
-        
-            if (Boolean(searcQueryMode) === false || Boolean(searchTextRequest) === false) {
-                Fetch.get('get_ids', {"offset": quantityShowCard * paginationNumber, "limit": 60}).then(el => (
-                Fetch.get('get_items', {"ids": el}))).then(el => setProductInfo(el))
-                
-            }
-            else {
-                Fetch.get('filter', {[searcQueryMode]: checkIsDigital(searchTextRequest)}).then(el => (
-                Fetch.get('get_items', {"ids": el}))).then(el => setProductInfo(el))  
-            }
-        
-        
+    useEffect(() => {  
+        if (Boolean(searcQueryMode) === false || Boolean(searchTextRequest) === false) {
+            setProductInfo([]);
+            Fetch.get('get_ids', {"offset": quantityShowCard * (paginationNumber - 1), "limit": 60}).then(el => 
+            Fetch.get('get_items', {"ids": el})).then(el => setProductInfo(el))
+        }
     }, [paginationNumber, searchTextRequest])
 
-  
-    console.log(productInfo)
-    
 
+    useEffect(() => { 
+            setProductInfo([]);
+            if (Boolean(searcQueryMode) === true && Boolean(searchTextRequest) === true) { {
+                Fetch.get('filter', {[searcQueryMode]: checkIsDigital(searchTextRequest)}).then(el => {
+
+                return (Fetch.get('get_items', {"ids": el}))
+                }).then(el => setProductInfo(el)
+                )
+            }
+        }
+    }, [searchTextRequest])
+
+    console.log(productInfo.length)
+
+    const getPartialElementPagin = () => {
+        if (searcQueryMode && searchTextRequest) {
+            let oneStep = quantityShowCard * paginationNumber;
+            let twoStep = quantityShowCard * paginationNumber + quantityShowCard;
+    
+            if (twoStep >= productInfo.length) twoStep = productInfo.length;
+            console.log(twoStep)
+            const paginationCurrent = productInfo.slice(oneStep, twoStep);
+            return paginationCurrent
+        }
+        else return productInfo;
+    }
+    console.log(getPartialElementPagin())
+  
     return (
         <React.Fragment>
             {productInfo.length > 2 &&
             <div className={st.quantity_prod}>
-                Товаров на странице: {productInfo[0] !== undefined ? productInfo.length : ''}
-            </div>}
+                Товаров на странице: {productInfo[0] !== undefined ? getPartialElementPagin().length : ''}
+            </div>
+            }
             <div className={st.list_product_wrapper}>
                 <div className={st.list_product}>
                     {productInfo.length === 0 && <Loading />}
-                    {   
-                    (productInfo.length > 2 && productInfo[0] !== undefined) ? 
-                     productInfo.map((element: productsInfoType | undefined) => <CardListItem 
+                    {(productInfo.length > 2 && productInfo[0] !== undefined) ? 
+                      getPartialElementPagin().map((element: productsInfoType | undefined) => <CardListItem 
                                 key={element!.id}
                                 brand={element?.brand}
                                 id={element!.id}
@@ -64,10 +81,12 @@ const ListProducts: React.FC = () => {
                     <FormFilter setSearcQueryMode={setSearcQueryMode}
                                 searcQueryMode={searcQueryMode}
                                 setSearchTextRequest={setSearchTextRequest}
+                                setPaginationNumber={setPaginationNumber}
                     />
                     <Pagination setPaginationNumber={setPaginationNumber}
-                                lengthArrayProducts={productInfo.length}
-                                quantityProductOnPage={quantityShowCard} />
+                                lengthArrayProducts={searcQueryMode && searchTextRequest ? productInfo.length : 6250}
+                                quantityProductOnPage={quantityShowCard}
+                                paginationNumber={paginationNumber} />
                 </div>
             </div>
         </React.Fragment>

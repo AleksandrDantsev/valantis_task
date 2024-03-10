@@ -10,6 +10,7 @@ const Loading: React.FC = () => {
                 <span className={st.anim1}></span>
                 <span className={st.anim2}></span>
                 <span className={st.anim3}></span>
+                <span className={st.anim4}></span>
             </div>
         </div>
     )

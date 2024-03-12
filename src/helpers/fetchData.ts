@@ -2,11 +2,14 @@ import { KEY_ACCESS } from '../constants/authentication';
 import { productsInfoType } from '../types/fetchTypes';
 
 
+
 class FetchValantis {
-    private url = "http://api.valantis.store:40000/";
+    private url = "https://api.valantis.store:41000/";
     private key = KEY_ACCESS;
 
+
     public async get(method: string, params: {[key: string] : string | number | string[] | undefined[]}): Promise<any> {
+        
         try {
             const fetchResult = await fetch(this.url, {
             method: "POST", 
@@ -47,17 +50,13 @@ class FetchValantis {
             }     
         }
 
-        catch(error) {
+        catch(error: any) {
             console.log(error);
-
-            let unsuccessfulAttempt = 0;
-            let result;
-            while (!result || unsuccessfulAttempt < 6) {
-                result = this.get(method, params);
-                unsuccessfulAttempt += 1;
+            if (String(error).indexOf("Authentica") != -1) {
+                return ['401']; 
             }
-            if (unsuccessfulAttempt === 5) return [undefined];
-            return result;
+
+            return this.get(method, params);
         }
     
         return [undefined];
